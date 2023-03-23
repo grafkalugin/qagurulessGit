@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.9.3'
+}
+
+group 'guru.qa'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    allureVersion = '2.17.3'
+    junitVersion = '5.9.2'
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testImplementation('com.codeborne:selenide:6.12.4')
+    testImplementation("io.qameta.allure:allure-selenide:${allureVersion}")
+    testImplementation('org.slf4j:slf4j-simple:1.7.30')
+    testImplementation("org.junit.jupiter:junit-jupiter:${junitVersion}")
+}
+
+test {
+    // @BLOCKER - можно вынести запуск по тегам сюда, но лучше запускать через параметры запуска gradle -D ...
+    useJUnitPlatform()
+}
+allure {
+//    autoconfigure = true
+    version = "${allureVersion}"
+
+    useJUnit5 {
+        version = "${allureVersion}"
+    }
+}
